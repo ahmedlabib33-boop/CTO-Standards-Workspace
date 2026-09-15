@@ -1,0 +1,31 @@
+# Secrets - never commit
+repo_token.txt
+.env
+.env.local
+.env.*.local
+vercel_deploy_hook.txt
+
+# Node / Next
+node_modules/
+.next/
+out/
+.vercel/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Local scratch
+*.log
+.DS_Store
+Thumbs.db
+
+# Excel temp/lock files
+~$*.xlsx
+~$*.xlsm
+
+# Optional local-only live/history drops (uncomment if they must stay local)
+# data/optional/live/*
+# data/optional/historical/*
