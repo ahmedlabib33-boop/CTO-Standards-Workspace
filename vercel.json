@@ -1,6 +1,4 @@
 {
-  "framework": "nextjs",
-  "functions": {
-    "api/*.py": {"runtime": "python3.12"}
-  }
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "nextjs"
 }
