@@ -1,0 +1,184 @@
+{
+  "schema_version": "1.0",
+  "document_keywords": {
+    "boq": [
+      "bill of quantities",
+      "boq",
+      "item description",
+      "quantity",
+      "unit rate",
+      "amount"
+    ],
+    "spec": [
+      "section ",
+      "division ",
+      "part 1 - general",
+      "part 2 - products",
+      "execution"
+    ],
+    "contract": [
+      "conditions of contract",
+      "contract sum",
+      "time for completion",
+      "performance bond",
+      "instructions to tenderers",
+      "form of tender"
+    ],
+    "drawing": [
+      "drawing no",
+      "scale",
+      "revision",
+      "approved for construction",
+      "general arrangement"
+    ],
+    "qc": [
+      "quality control",
+      "inspection request",
+      "ncr",
+      "material inspection",
+      "inspection and test plan"
+    ]
+  },
+  "boq_section_to_csi": {
+    "excavation": "31 23 00",
+    "backfilling": "31 23 00",
+    "piling": "31 63 00",
+    "concrete": "03 30 00",
+    "reinforcement": "03 20 00",
+    "masonry": "04 20 00",
+    "blockwork": "04 20 00",
+    "waterproofing": "07 10 00",
+    "insulation": "07 20 00",
+    "doors": "08 10 00",
+    "windows": "08 50 00",
+    "plaster": "09 24 00",
+    "painting": "09 90 00",
+    "plumbing": "22 00 00",
+    "hvac": "23 00 00",
+    "electrical": "26 00 00",
+    "communications": "27 00 00",
+    "earthwork": "31 00 00",
+    "roads": "32 10 00",
+    "asphalt": "32 12 16",
+    "utilities": "33 00 00"
+  },
+  "symbol_to_csi": {
+    "GFRC": "03 40 00",
+    "GRC": "03 40 00",
+    "SHS": "05 12 00",
+    "A325": "05 05 23",
+    "HANDRAIL": "05 50 00",
+    "DOOR": "08 10 00",
+    "WINDOW": "08 50 00",
+    "WALL": "04 20 00",
+    "WATER-PIPE": "22 11 00",
+    "SEWAGE": "22 13 00",
+    "LUMINAIRE": "26 51 00",
+    "ASPHALT": "32 12 16",
+    "CURB": "32 16 00"
+  },
+  "keyword_to_csi": {
+    "reinforced concrete": "03 30 00",
+    "plain concrete": "03 30 00",
+    "rebar": "03 20 00",
+    "steel reinforcement": "03 20 00",
+    "cement block": "04 20 00",
+    "concrete block": "04 20 00",
+    "brick": "04 20 00",
+    "membrane waterproof": "07 10 00",
+    "thermal insulation": "07 20 00",
+    "ceramic tile": "09 30 00",
+    "flooring": "09 60 00",
+    "paint": "09 90 00",
+    "fire fighting": "21 00 00",
+    "sanitary": "22 00 00",
+    "air conditioning": "23 00 00",
+    "cable": "26 05 19",
+    "lighting": "26 50 00",
+    "excavation": "31 23 00",
+    "backfill": "31 23 00",
+    "asphalt": "32 12 16",
+    "reinforcement steel": "03 20 00"
+  },
+  "contract_terms": {
+    "contract_sum": [
+      "contract sum",
+      "contract price",
+      "lump sum"
+    ],
+    "time_for_completion": [
+      "time for completion",
+      "completion period",
+      "contract duration"
+    ],
+    "performance_bond": [
+      "performance bond",
+      "performance security"
+    ],
+    "advance_payment": [
+      "advance payment"
+    ],
+    "retention": [
+      "retention"
+    ],
+    "liquidated_damages": [
+      "liquidated damages",
+      "delay damages"
+    ],
+    "tender_bond": [
+      "tender bond",
+      "bid bond"
+    ],
+    "defects_liability": [
+      "defects liability",
+      "defects notification period"
+    ]
+  },
+  "matching": {
+    "auto_accept_threshold": 0.78,
+    "review_threshold": 0.48,
+    "max_candidates": 3
+  },
+  "samco_synonyms": {
+    "raft": [
+      "foundation"
+    ],
+    "foundation": [
+      "raft"
+    ],
+    "blockwork": [
+      "masonry",
+      "block"
+    ],
+    "block": [
+      "masonry"
+    ],
+    "plaster": [
+      "render"
+    ],
+    "render": [
+      "plaster"
+    ],
+    "excavation": [
+      "earthwork"
+    ],
+    "backfill": [
+      "earthwork"
+    ],
+    "reinforced": [
+      "concrete"
+    ],
+    "rc": [
+      "concrete"
+    ],
+    "slab": [
+      "slabs"
+    ],
+    "wall": [
+      "walls"
+    ],
+    "column": [
+      "columns"
+    ]
+  }
+}

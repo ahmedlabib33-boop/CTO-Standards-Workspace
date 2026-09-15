@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "updated_at": null,
+  "activities": {},
+  "resources": {},
+  "rates": {},
+  "assumptions": {},
+  "additions": {
+    "activities": [],
+    "resources": [],
+    "rates": [],
+    "assumptions": []
+  },
+  "deletions": {
+    "activities": [],
+    "resources": [],
+    "rates": [],
+    "assumptions": []
+  },
+  "notes": "Admin overlay: patch existing records, append new records, or suppress records without modifying the Excel baseline."
+}

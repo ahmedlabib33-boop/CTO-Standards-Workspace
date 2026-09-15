@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.0.0",
+  "identity": {
+    "activity_prefix": "SAM-CTO-",
+    "digits": 9,
+    "strategy": "deterministic_sha1_of_legacy_activity_code",
+    "note": "Admin overrides may replace any generated SAM-CTO ID without changing the Excel baseline."
+  },
+  "workbooks": [
+    {
+      "match_contains": "Activity lists",
+      "role": "activity_resource_library",
+      "sheets": {
+        "Activity List CSI": {"header_row": 3, "dataset": "activity_master", "required": ["Activity Code", "Activity description"]},
+        "Resource Unique List": {"header_row": 3, "dataset": "resource_master", "required": ["Resource Code", "Resource Description", "UOM"]},
+        "Material Unique List": {"header_row": 3, "dataset": "material_master", "required": ["Material List", "Resource Main Code", "UOM"]},
+        "Manpower List": {"header_row": 4, "dataset": "manpower_rates", "required": ["Organization Position", "Manpower Main Code", "Total"]},
+        "ManPower Unique List": {"header_row": 3, "dataset": "crew_rates", "required": ["Crew Type", "Resource Main code"]},
+        "Machine List": {"header_row": 3, "dataset": "machine_rates", "required": ["Resource Code", "Resource Description", "UOM"]},
+        "List of Unique Machinary": {"header_row": 4, "dataset": "machinery_cost_model", "required": ["Machinary Type", "CSI CODE"]},
+        "Mat. List CSI": {"header_row": 3, "dataset": "activity_material_map", "required": ["Activity Code", "Resource Description"]},
+        "MP. List CSI": {"header_row": 3, "dataset": "activity_manpower_map", "required": ["Activity Code", "Resource Description"]},
+        "Equip. List CSI": {"header_row": 3, "dataset": "activity_equipment_map", "required": ["Activity Code", "Resource Description"]},
+        "SUBC. List CSI": {"header_row": 3, "dataset": "activity_subcontractor_map", "required": ["Activity Code", "Resource Description"]},
+        "Manpower PR": {"header_row": 3, "dataset": "manpower_productivity", "required": ["Activity Code", "Crew Type", "UOM"]},
+        "Machinary PR": {"header_row": 3, "dataset": "machinery_productivity", "required": ["Activity Code"]},
+        "Machinary PR2": {"header_row": 3, "dataset": "machinery_productivity_2", "required": ["Activity Code"]}
+      }
+    },
+    {
+      "match_contains": "Tender Bid Calculation & Pricing Workbook",
+      "role": "tender_pricing_library",
+      "sheets": {
+        "Fixed Material Prices": {"header_row": 4, "dataset": "tender_material_rates", "required": ["Code", "Material Description", "Unit"]},
+        "Concrete Mix Calculator": {"header_row": 4, "dataset": "concrete_mix_rates", "required": ["Grade", "Description"]},
+        "Thresholds & Assumptions": {"header_row": 1, "dataset": "commercial_assumptions_raw", "required": []},
+        "BOQ - Buildings": {"header_row": 4, "dataset": "boq_buildings", "required": ["Item", "Description", "Unit"]},
+        "BOQ - Roads": {"header_row": 4, "dataset": "boq_roads", "required": ["Item", "Description", "Unit"]},
+        "BOQ - Bridges": {"header_row": 4, "dataset": "boq_bridges", "required": ["Item", "Description", "Unit"]},
+        "BOQ - Tunnels": {"header_row": 4, "dataset": "boq_tunnels", "required": ["Item", "Description", "Unit"]},
+        "Bid Summary Dashboard": {"header_row": 4, "dataset": "bid_summary_raw", "required": []}
+      },
+      "sections": {
+        "Labor & Equipment Rates": [
+          {"name": "labor_reference_rates", "header_row": 5, "start_row": 6, "end_row": 15},
+          {"name": "equipment_reference_rates", "header_row": 18, "start_row": 19, "end_row": 27}
+        ]
+      }
+    }
+  ],
+  "runtime_layers": [
+    "generated_excel_baseline",
+    "admin_overrides",
+    "optional_historical_data",
+    "optional_live_project_data"
+  ],
+  "fallback_policy": {
+    "historical_missing": "continue_with_corporate_baseline",
+    "live_missing": "continue_with_corporate_baseline",
+    "both_missing": "baseline_only_mode",
+    "generated_json_missing": "application_stays_online_with_empty_safe_defaults"
+  }
+}

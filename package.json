@@ -1,0 +1,32 @@
+{
+  "name": "samco-cto-standards-hub",
+  "version": "0.4.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "data:build": "python scripts/excel_to_json.py",
+    "data:clean": "node scripts/clean_generated.mjs",
+    "worker": "python workers/worker.py",
+    "typecheck": "tsc --noEmit",
+    "db:seed": "python scripts/seed_postgres.py",
+    "ingestion:dev": "uvicorn ingestion.service:app --reload --port 8010",
+    "python:check": "python -m compileall ingestion api workers scripts",
+    "ingestion:test": "python scripts/test_intake_smoke.py"
+  },
+  "dependencies": {
+    "next": "15.5.2",
+    "react": "19.1.1",
+    "react-dom": "19.1.1",
+    "pg": "^8.13.1",
+    "redis": "^4.7.0"
+  },
+  "devDependencies": {
+    "@types/node": "24.3.0",
+    "@types/react": "19.1.10",
+    "@types/react-dom": "19.1.7",
+    "typescript": "5.9.2",
+    "@types/pg": "^8.11.10"
+  }
+}
