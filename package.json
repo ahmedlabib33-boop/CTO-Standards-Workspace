@@ -16,7 +16,7 @@
     "ingestion:test": "python scripts/test_intake_smoke.py"
   },
   "dependencies": {
-    "next": "15.5.2",
+    "next": "15.5.7",
     "react": "19.1.1",
     "react-dom": "19.1.1",
     "pg": "^8.13.1",
