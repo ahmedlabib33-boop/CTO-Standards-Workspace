@@ -1,13 +1,13 @@
 from __future__ import annotations
 import os
-from fastapi import FastAPI, UploadFile, File, Form, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from .extract import extract_pdf, try_ocr_pdf
 from .classifier import detect_document_type
 from .parsers import parse_boq, parse_specs, parse_contract
 from .drawings import parse_pdf_drawing, parse_dxf
 from .integrator import integrate_project
-from .models import DocumentResult
+from .models import DocumentResult, IntegratedProject
 from .persistence import persist_project
 
 MAX_BYTES=int(os.getenv("SAMCO_INGESTION_MAX_BYTES","50000000"))
@@ -22,9 +22,7 @@ app.add_middleware(CORSMiddleware,allow_origins=["http://localhost:3000","http:/
 def health():
     return {"ok":True,"engine":"SAMCO Project Intake & Scope Integration","version":"0.4.0","core_dependency":False,"supported":["pdf","dxf"],"ocr":"optional_last_resort"}
 
-@app.post("/")
-@app.post("/api/intake")
-async def intake(project_code: str=Form(...), project_name: str=Form(...), files: list[UploadFile]=File(...)):
+async def process_upload_batch(project_code: str, project_name: str, files) -> IntegratedProject:
     if not project_code.strip() or not project_name.strip(): raise HTTPException(400,"project_code and project_name are required")
     if len(files)>MAX_FILES: raise HTTPException(413,f"maximum {MAX_FILES} files per batch")
     boq=[]; specs=[]; contracts=[]; drawings=[]; docs=[]; names=[]
@@ -68,8 +66,45 @@ async def intake(project_code: str=Form(...), project_name: str=Form(...), files
                 els,needs=parse_pdf_drawing(name,data); drawings.extend(els)
                 if els: kind="drawing"
         docs.append(DocumentResult(filename=name,document_type=kind,pages=len(extracted.pages),chars=extracted.chars,extraction_mode=extracted.mode,needs_ocr=extracted.needs_ocr,warnings=warnings+[f"classification_confidence={confidence:.2f}"]))
-    result=integrate_project(project_code.strip(),project_name.strip(),names,docs,boq,specs,contracts,drawings)
-    persistence=persist_project(result)
+    return integrate_project(project_code.strip(),project_name.strip(),names,docs,boq,specs,contracts,drawings)
+
+
+async def finalize_integrated_result(request: Request):
+    try:
+        body=await request.json()
+    except Exception as exc:
+        raise HTTPException(400,"finalize request must contain JSON") from exc
+    if body.get("operation") != "finalize":
+        raise HTTPException(400,"JSON intake requests must use operation=finalize")
+    try:
+        result=IntegratedProject.model_validate(body.get("result"))
+    except Exception as exc:
+        raise HTTPException(422,f"invalid integrated intake result: {exc}") from exc
     payload=result.model_dump(mode="json")
-    payload["persistence"]=persistence
+    payload["persistence"]=persist_project(result)
+    return payload
+
+
+@app.post("/")
+@app.post("/api/intake")
+async def intake(request: Request):
+    content_type=request.headers.get("content-type","").lower()
+    if content_type.startswith("application/json"):
+        return await finalize_integrated_result(request)
+
+    form=await request.form()
+    project_code=str(form.get("project_code") or "")
+    project_name=str(form.get("project_name") or "")
+    files=list(form.getlist("files"))
+    if not files or any(not hasattr(file,"read") for file in files):
+        raise HTTPException(400,"at least one PDF or DXF file is required")
+
+    result=await process_upload_batch(project_code,project_name,files)
+    payload=result.model_dump(mode="json")
+    # Browser batch uploads must not create one incomplete persisted project per
+    # document. The browser merges all evidence, then sends one finalize request.
+    if str(form.get("batch_mode") or "") == "partial":
+        payload["persistence"]={"persisted":False,"mode":"batch_partial","message":"Document processed; awaiting integrated batch finalization."}
+    else:
+        payload["persistence"]=persist_project(result)
     return payload

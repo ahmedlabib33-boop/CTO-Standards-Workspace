@@ -76,4 +76,6 @@ Open `http://localhost:3000/intake`.
 
 Apply migrations 001, 002 and 003. Configure `DATABASE_URL`. The Vercel Python entrypoint is `api/intake.py`; if the Python intake service is deployed separately, set `NEXT_PUBLIC_INGESTION_API_URL` to that endpoint.
 
+The public Vercel page sends each selected source file in its own request, then merges the returned evidence and finalizes one integrated scope. This avoids the Vercel request-body ceiling without creating a separate document store. The default public per-file ceiling is 3 MB (`NEXT_PUBLIC_INGESTION_MAX_REQUEST_BYTES`); larger documents must use the local Python intake service or a separately approved storage-backed production pipeline.
+
 Server-side Tesseract is optional and intentionally not a core dependency. Native PDF extraction is attempted first. For a runtime that provides Tesseract, install `requirements-ocr.txt`.
